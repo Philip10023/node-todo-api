@@ -81,15 +81,13 @@ UserSchema.statics.findByCredentials = function (email, password) {
     return new Promise((resolve, reject) => {
       bcyrpt.compare(password, user.password, (err, res) => {
         if (res) {
-          consele.log('resolving user')
-          resolve(user)
+          resolve(user);
         } else {
-          console.log('something went wrong')
-          reject()
+          reject();
         }
-      })
-    })
-  })
+      });
+    });
+  });
 }
 
 UserSchema.pre('save', function (next) {
