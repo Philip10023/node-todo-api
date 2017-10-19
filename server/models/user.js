@@ -8,8 +8,8 @@ var UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    minlength: 1,
     trim: true,
+    minlength: 1,
     unique: true,
     validate: {
       validator: validator.isEmail,
@@ -31,7 +31,8 @@ var UserSchema = new mongoose.Schema({
       required: true
     }
   }]
-})
+});
+
 
 UserSchema.methods.toJSON = function () {
   var user = this
@@ -70,16 +71,16 @@ UserSchema.statics.findByToken = function (token) {
 }
 
 UserSchema.statics.findByCredentials = function (email, password) {
-  var User = this
+  var User = this;
 
   return User.findOne({email}).then((user) => {
     if (!user) {
-      console.log('something wrong!')
-      return Promise.reject()
+      return Promise.reject();
     }
 
     return new Promise((resolve, reject) => {
-      bcyrpt.compare(password, user.password, (err, res) => {
+      // Use bcrypt.compare to compare password and user.password
+      bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
           resolve(user);
         } else {
@@ -88,7 +89,7 @@ UserSchema.statics.findByCredentials = function (email, password) {
       });
     });
   });
-}
+};
 
 UserSchema.pre('save', function (next) {
   var user = this
